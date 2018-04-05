@@ -1,0 +1,10 @@
+#!/bin/bash -e
+cat <<EOF
+This is the oc-observe S2I image:
+To use it, install S2I: https://github.com/openshift/source-to-image
+Sample invocation:
+s2i build <source code path/URL> oc-observe <application image>
+EX: s2i build test/test-app/ oc-observe sample-app
+You can then run the resulting image via:
+docker run -e RESOURCE='namespaces' OBSERVE_ARGS="-a '{ .status.addresses[0].address }'" -e SCRIPT_FILE='./owners.sh' <application image>
+EOF

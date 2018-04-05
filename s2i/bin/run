@@ -1,0 +1,28 @@
+#!/bin/bash -e
+#
+# S2I run script for the 'oc-observe' image.
+# The run script executes the server that runs your application.
+#
+# For more information see the documentation:
+#  https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+echo "---> Starting oc observe"
+
+echo "--> # RESOURCE = $RESOURCE"
+echo "--> # OBSERVE_ARGS = $OBSERVE_ARGS"
+echo "--> # SCRIPT_FILE = $SCRIPT_FILE"
+
+if [ -z "$RESOURCE" ]
+then
+	echo "RESOURCE must be set"; exit 1;
+fi
+
+if [ -z "$SCRIPT_FILE" ]
+then
+    exec oc observe $RESOURCE $OBSERVE_ARGS
+else
+    exec oc observe $RESOURCE $OBSERVE_ARGS -- $SCRIPT_FILE
+fi
+
+

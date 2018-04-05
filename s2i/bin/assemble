@@ -1,0 +1,17 @@
+#!/bin/bash -e
+#
+# S2I assemble script for the 'oc-observe' image.
+# The 'assemble' script builds your application source so that it is ready to run.
+#
+# For more information refer to the documentation:
+#  https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+# If the 'oc-observe' assemble script is executed with the '-h' flag, print the usage.
+
+# Restore artifacts from the previous build (if they exist).
+#
+
+echo "---> Installing application source..."
+
+cp -Rf /tmp/src/. ./
