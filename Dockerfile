@@ -5,15 +5,13 @@ ARG OPENSHIFT_CLIENT_HASH
 LABEL io.k8s.description="Platform for building and running OC observers" \
       io.openshift.tags="openshift,oc,observe"
 
-RUN git clone https://github.com/openshift/origin.git --branch v3.6.1
-
-RUN cd origin
-
-RUN git cherry-pick 756f7d
-
-RUN make build WHAT=cmd/oc
-
-COPY _output/local/bin/linux/amd64/oc /usr/local/bin
+RUN git clone https://github.com/openshift/origin.git --branch v3.6.1; \
+        cd origin; \
+        git cherry-pick 756f7d; \
+        make build WHAT=cmd/oc; \
+        cp _output/local/bin/linux/amd64/oc /usr/local/bin; \
+        cd..; \
+        rm -rf origin
 
 RUN mkdir -p /opt/s2i/destination
 
