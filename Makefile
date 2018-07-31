@@ -23,5 +23,15 @@ v3.9.0: build
 
 
 .PHONY: build
+
+compile-oc:
+	git clone https://github.com/openshift/origin.git --branch v3.6.1
+	cd origin
+	git cherry-pick 756f7d
+	make build WHAT=cmd/oc
+	cp _output/local/bin/linux/amd64/oc ./oc
+	cd..
+	rm -rf origin
+
 build:
 	docker build --no-cache --build-arg OPENSHIFT_CLIENT_VERSION=$(OPENSHIFT_CLIENT_VERSION) --build-arg OPENSHIFT_CLIENT_HASH=$(OPENSHIFT_CLIENT_HASH) -t $(IMAGE_NAME):$(OPENSHIFT_CLIENT_VERSION) .
