@@ -1,5 +1,6 @@
-IMAGE_NAME=oc-observe
-
+IMAGE_NAME = oc-observe
+PARENT_DIR = "$(shell pwd)"
+TMPDIR = ${PARENT_DIR}/origin/tmp
 
 v1.5.1: OPENSHIFT_CLIENT_VERSION=v1.5.1
 v1.5.1: OPENSHIFT_CLIENT_HASH=7b451fc
@@ -26,12 +27,14 @@ v3.9.0: build
 
 compile-oc:
 	git clone https://github.com/openshift/origin.git --branch v3.6.1
-	cd origin
-	git cherry-pick 756f7d
-	make build WHAT=cmd/oc
-	cp _output/local/bin/linux/amd64/oc ./oc
-	cd..
+	mkdir ${TMPDIR} -p
+	cd origin; git cherry-pick 0706074 -m 1; \
+	           TMPDIR=${TMPDIR} make build WHAT=cmd/oc
+	cp origin/_output/local/bin/linux/amd64/oc ./oc
 	rm -rf origin
+
+clean: 
+	-rm -rf origin oc
 
 build:
 	docker build --no-cache --build-arg OPENSHIFT_CLIENT_VERSION=$(OPENSHIFT_CLIENT_VERSION) --build-arg OPENSHIFT_CLIENT_HASH=$(OPENSHIFT_CLIENT_HASH) -t $(IMAGE_NAME):$(OPENSHIFT_CLIENT_VERSION) .
